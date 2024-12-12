@@ -1,0 +1,174 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Evita el scroll en el cuerpo */
+  background-color: rgb(18, 17, 17);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.min-h-full {
+  height: 100%; 
+}
+
+.min-h-screen {
+  height: 100vh; 
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.overflow-hidden {
+  overflow: hidden; 
+}
+
+.overflow-y-auto {
+  overflow-y: auto; 
+}
+
+.table-wrapper {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+
+#img {
+  background-color: rgb(18, 17, 17);
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.678);
+}
+
+#filter {
+  background-color: rgb(29, 28, 28);
+  border-radius: 5px;
+  padding: 3px;
+}
+
+#progress {
+  background-color: rgb(18, 17, 17);
+  
+}
+
+#player {
+  background-color: rgb(29, 28, 28);
+  box-shadow: 0px -10px 15px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+.custom-button {
+  font-weight: bold;
+  font-size: 12px;
+  background-color: #30b116; 
+  color: white; 
+  padding: 10px 30px; 
+  border: none; 
+  border-radius: 50px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease; 
+}
+
+.custom-button:hover {
+  background-color: #3ae610; 
+}
+
+#close-modal {
+  color:#30b116;
+ }
+ 
+#maximize-sidebar {
+  background-color: #3fc91d; 
+}
+
+.row {
+  padding: 30px;
+  background: linear-gradient(to bottom, rgba(46, 46, 46, 0.963), rgb(8, 8, 8));
+
+}
+
+input[type="range"] {
+  appearance: none;
+  height: 4px;
+  background: rgb(182, 177, 177);
+  border-radius: 5px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: rgb(14, 13, 13);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: rgb(14, 13, 13);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Style inputs */
+.custom-input {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+}
+
+/* Style button play os list */
+.group:hover .group-hover\:flex {
+  display: flex;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+/* Progress-Bar*/
+#progress-bar {
+  background-color: #4a5568; 
+  height: 10px; 
+  border-radius: 10px; 
+  overflow: hidden; 
+  position: relative;
+}
+
+
+#progress-bar > div {
+  background-color: black; 
+  height: 100%; 
+  border-radius: 10px; 
+  transition: width 0.1s linear; 
+}
+
+#progress-bar > div::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(50%, -50%);
+  width: 12px; 
+  height: 12px; 
+  border-radius: 50%; 
+}
+
+

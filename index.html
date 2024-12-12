@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module" src="./src/js/index.js" defer></script>
+  <link rel=stylesheet href=./src/css/style.css>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css" rel="stylesheet">
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/javascript.png">
+  <title>Spotify Clon</title>
+</head>
+
+<body class="h-full flex flex-col overflow-hidden">
+  <div class="flex flex-1 flex-col md:flex-row overflow-hidden">
+    <aside class="w-full md:w-1/4 bg-black p-1 flex flex-col">
+      <div class="flex space-x-2 mb-2">
+        <div id="close-sidebar" class="w-3 h-3 bg-red-500 rounded-full cursor-pointer"></div>
+        <div id="minimize-sidebar" class="w-3 h-3 bg-yellow-500 rounded-full cursor-pointer"></div>
+        <div id="maximize-sidebar" class="w-3 h-3  rounded-full cursor-pointer"></div>
+      </div>
+      <div id="filter">
+        <div class="flex items-center justify-start space-x-1" id="toggle-filters">
+          <box-icon name="right-arrow" type="solid" color="#ffffff" id="filter-arrow" size="xs"></box-icon>
+          <h2 class="text-sm text-white font-bold mt-2 cursor-pointer">Filtros</h2>
+        </div>
+        <ul id="filter-list" class="hidden">
+          <li class="m-2 text-white hover:text-gray-400 cursor-pointer" id="all-filter">Todos</li>
+          <li class="m-2 text-white hover:text-gray-400 cursor-pointer" id="favorites-filter">Favoritos</li>
+          <!--Buttom a-z-->
+          <li class="m-2 text-white hover:text-gray-400 cursor-pointer" id="alphabetical-sort">Ordenar A-Z</li>
+        </ul>
+      </div>
+      <div id="img" class="mt-auto w-full h-80"></div>
+    </aside>
+    <main class="flex-1 flex flex-col m-1 overflow-hidden">
+      <!--No windws and tables-->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <div class="row">
+          <div class="hidden md:block">
+            <header class="flex justify-between items-center mb-4">
+              <div class="relative w-48">
+                <input type="text" placeholder="Search" class="w-36 pl-8 pr-4 py-0.5 text-sm font-bold rounded-full bg-white
+               focus:outline-none focus:ring-2 focus:ring-gray-500" />
+                <box-icon name="search-alt"
+                  class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"></box-icon>
+              </div>
+              <div class="flex items-center space-x-3">
+                <img src="./src/img/think.png" class="rounded-full h-7 w-7" />
+                <span class="text-white text-xl font-black">Javier</span>
+              </div>
+            </header>
+          </div>
+          <div class="flex items-center justify-between mb-4">
+            <h1 class="text-xl md: text-3xl text-white font-black">Music</h1>
+            <div class="flex items-center">
+              <button class="custom-button font-black mr-3">PAUSE</button>
+              <box-icon name='add-to-queue' type="solid" color='#efe3e3' id="open-modal"></box-icon>
+              <!-- Modal -------------------------------------------------------->
+              <div id="upload-modal" class="fixed inset-0 bg-opacity-50 flex items-center justify-center hidden">
+                <div class="bg-white w-full max-w-lg rounded-lg p-6 relative">
+                  <!-- Close-botton -->
+                  <button id="close-modal" class="absolute top-2 left-4 text-6xl">&times;</button>
+
+                  <h2 class="text-sm font-bold text-center m-5">Añadir nueva canción</h2>
+
+                  <form id="upload-form" class="space-y-6 text-center" method="">
+                    <!-- mp3-->
+                    <div class="flex border border-gray-100 hover:border-2 hover:border-gray-400 rounded">
+                      <div>
+                        <label class="cursor-pointer bg-gray-100 border border-gray-300 
+                      hover:border-gray-500 hover:bg-gray-200 text-sm">
+                          Seleccionar archivo
+                          <input type="file" id="song-file" class="hidden" />
+                        </label>
+                      </div>
+                    </div>
+                    <!-- Title song -->
+                    <div>
+                      <label class="block text-sm font-bold mb-1">Título</label>
+                      <input type="text" id="song-title"
+                        class="w-full border border-gray-100 hover:border-2 hover:border-gray-400 rounded" required />
+                    </div>
+                    <!-- Author song -->
+                    <div>
+                      <label class="block text-sm font-bold mb-1">Autor</label>
+                      <input type="text" id="song-author"
+                        class="w-full border border-gray-100 hover:border-2 hover:border-gray-400 rounded" required />
+                    </div>
+                    <!-- Img -->
+                    <div>
+                      <label class="block text-sm font-bold mb-1 ">Imagen de portada</label>
+                      <div class="flex border border-gray-100 hover:border-2 hover:border-gray-400">
+                        <div>
+                          <label class="cursor-pointer bg-gray-100 border border-gray-300 
+                        hover:border-gray-500 hover:bg-gray-200 text-sm">
+                            Seleccionar archivo
+                            <input type="file" id="song-cover" class="hidden " />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Send button -->
+                    <div class="flex justify-center">
+                      <button type="submit" class="custom-button font-black">
+                        Subir
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!--Here windows and tablets-->
+      <div>
+        <div class="flex-1 overflow-y-auto">
+          <div class="min-h-screen flex flex-col justify-start mx-auto max-w-full px-4 overflow-x-auto">
+            <table class="text-center text-gray-300 w-full">
+              <thead class="border-b border-gray-400">
+                <tr>
+                  <th class="py-2 px-4"></th>
+                  <th class="py-2 px-4">TITULO</th>
+                  <th class="py-2 px-4">ARTISTA</th>
+                  <th class="py-2 px-4 text-center">
+                    <box-icon name='time-five' color='#c1aaaa'></box-icon>
+                  </th>
+                  <th class="py-2 px-4 text-center"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Dinamic songs JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer id="player" class="flex flex-col items-center p-4 ">
+    <div class="flex flex-col md:flex-row items-center justify-between w-full space-y-4 md:space-y-0">
+      <div class="flex flex-row lg:flex-col items-center lg:items-start text-center lg:text-left text-white lg:ml-5">
+        <p id="songNow" class="font-black text-lg lg:mb-1 mr-4 lg:mr-0">Canción actual</p>
+        <p id="autor" class="text-gray-400 font-bold">Artista</p>
+      </div>
+
+      <div class="flex items-center justify-center space-x-4 md:space-x-8">
+        <button id="repeat"><box-icon name="repeat" color="#ffffff"></box-icon></button>
+        <button id="previous"><box-icon name="skip-previous" color="#ffffff"></box-icon></button>
+        <button id="play"><box-icon name="play-circle" color="#eadede" size="lg"></box-icon></button>
+        <button id="next"><box-icon name="skip-next" color="#ffffff"></box-icon></button>
+        <button id="shuffle"><box-icon name="shuffle" color="#ffffff"></box-icon></button>
+      </div>
+      <div class="hidden lg:flex items-center space-x-2">
+        <box-icon id="volume-icon" name='volume-low' type="solid" color='#ffffff'></box-icon>
+        <input id="volume" type="range" class="w-24 md:w-32" min="0" max="100" value="50" />
+      </div>
+    </div>
+    <!-- Progress Bar -->
+    <div class="flex items-center w-full  max-w-lg md:max-w-3xl mt-4 space-x-2">
+      <span id="startTime" class="text-gray-400 text-xs"></span>
+      <div id="progress-bar" class="flex-1 bg-gray-700 h-1">
+        <div class="bg-gray-300 h-full"></div>
+      </div>
+      <span id="endTime" class="text-gray-400 text-xs"></span>
+    </div>
+  </footer>
+</body>
+</html>
