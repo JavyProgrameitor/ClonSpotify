@@ -75,6 +75,8 @@
           <li class="m-2 text-white hover:text-gray-400 cursor-pointer" id="favorites-filter">Favoritos</li>
           <!--Buttom a-z-->
           <li class="m-2 text-white hover:text-gray-400 cursor-pointer" id="alphabetical-sort">Ordenar A-Z</li>
+          <li class="m-2 text-white hover:text-gray-400 cursor-pointer" id="long-song">Long Song</li>
+          <li class="m-2 text-white hover:text-gray-400 cursor-pointer" id="short-song">Short Song</li>
         </ul>
       </div>
       <div id="img" class="w-full h-full"></div>
@@ -162,22 +164,27 @@
         <div>
           <div class="flex-1 overflow-y-auto">
             <div class="min-h-screen flex flex-col justify-start mx-auto max-w-full px-4 overflow-x-auto">
-              <table class="text-center text-gray-300 w-full">
-                <thead class="border-b border-gray-400">
-                  <tr>
-                    <th class="py-2 px-4"></th>
-                    <th class="py-2 px-4">TITULO</th>
-                    <th class="py-2 px-4">ARTISTA</th>
-                    <th class="py-2 px-4 text-center">
-                      <box-icon name='time-five' color='#c1aaaa'></box-icon>
-                    </th>
-                    <th class="py-2 px-4 text-center"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Dinamic songs JS -->
-                </tbody>
-              </table>
+
+              <span class="loader oculta"></span>
+              <div id="span" class="oculta">
+
+                <table class="text-center text-gray-300 w-full">
+                  <thead class="border-b border-gray-400">
+                    <tr>
+                      <th class="py-2 px-4"></th>
+                      <th class="py-2 px-4">TITULO</th>
+                      <th class="py-2 px-4">ARTISTA</th>
+                      <th class="py-2 px-4 text-center">
+                        <box-icon name='time-five' color='#c1aaaa'></box-icon>
+                      </th>
+                      <th class="py-2 px-4 text-center"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Dinamic songs JS -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

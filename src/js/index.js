@@ -12,6 +12,49 @@ import {
 } from "./local.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  const loader = document.querySelector(".loader");
+  const content = document.getElementById("span");
+  //Loader
+  let array = ["1", "2", "3"];
+  
+  async function funcionAsincrona() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log("resolve");
+        resolve();
+      }, "1000");
+    });
+  }
+
+
+  async function simulateFetch() {
+    try {
+      // Mostrar loader
+      loader.classList.remove("oculta");
+      content.classList.add("oculta"); // ocultar contenido mientras carga
+
+      console.log("Petición al servidor");
+
+      for (let el of array) {
+        await funcionAsincrona();
+      }
+
+      // Ocultar loader
+      loader.classList.add("oculta");
+      // Ahora mostrar el contenido
+      content.classList.remove("oculta");
+
+      console.log("Operación que se espera hacer después de recorrer el array");
+
+      // Ya que terminó la simulación, ahora sí renderizamos las canciones
+      fetchSongs();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   // Comprobar si ya tenemos nombres en localStorage:
   let currentUsers = getStoredUsernames();
   // Si no hay usuarios guardados, creamos algunos por defecto
@@ -31,10 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
   /*
   Añadimos nuevos nombre con el modal en localstore
   */
-  const greenSidebar   = document.getElementById("green-sidebar");
-  const userModal      = document.getElementById("user-modal");
+  const greenSidebar = document.getElementById("green-sidebar");
+  const userModal = document.getElementById("user-modal");
   const closeUserModal = document.getElementById("close-user-modal");
-  const newUserForm    = document.getElementById("new-user-form");
+  const newUserForm = document.getElementById("new-user-form");
   const newUsernameInput = document.getElementById("new-username");
 
   // 2) ABRIR MODAL AL HACER CLICK EN EL BOTÓN VERDE
@@ -50,8 +93,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4) VALIDACIÓN EN EL SUBMIT DEL FORMULARIO
   newUserForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    
-    const username = newUsernameInput.value.trim(); 
+
+    const username = newUsernameInput.value.trim();
     // .trim() elimina espacios en blanco al principio y final (extra seguridad)
 
     // Regex que cumple los requisitos:
@@ -60,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Comprobación
     if (!usernameRegex.test(username)) {
       alert("Nombre de usuario no válido.\nDebe tener máximo 10 caracteres, " +
-            "empezar en mayúscula, solo letras y espacios sin espacios al inicio/fin.");
+        "empezar en mayúscula, solo letras y espacios sin espacios al inicio/fin.");
       return;
     }
 
@@ -82,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeChangeUserModal = document.getElementById("close-change-user-modal");
   const changeUserForm = document.getElementById("change-user-form");
   const userSelect = document.getElementById("user-select");
-  
+
 
   // ABRIR EL MODAL AL HACER CLICK EN EL BOTÓN AMARILLO
   yellowSidebar.addEventListener("click", () => {
@@ -137,8 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-
-
   const toggleFilters = document.getElementById("toggle-filters");
   const filterList = document.getElementById("filter-list");
   const filterArrow = document.getElementById("filter-arrow");
@@ -167,46 +208,74 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.querySelector('input[placeholder="Search"]');
   const alphabeticalSortButton = document.getElementById("alphabetical-sort");
 
+  const longSongButton = document.getElementById("long-song");
+  const shortSongButton = document.getElementById("short-song");
+
   searchInput.addEventListener("input", (event) => {
     const query = event.target.value.toLowerCase().trim();
-  
+
     // Filtramos las canciones segun el titulo o el artista
     const filteredSongs = currentSongs.filter(song =>
       song.title.toLowerCase().includes(query) ||
       song.artist.toLowerCase().includes(query)
     );
-  
+
     if (query === "") {
       renderSongsAll(currentSongs);
     } else {
       renderSongsAll(filteredSongs);
     }
   });
-  
-const renderSongsAll = (songs) => {
-  tbody.innerHTML = ""; 
-  songs.forEach((song) => {
-    const row = createSongRow(song, song.duration);
-    tbody.appendChild(row);
+  function renderSongsAll(songsArray) {
+    tbody.innerHTML = "";
+    songsArray.forEach((song) => {
+      const row = createSongRow(song);
+      tbody.appendChild(row);
+    });
+  }
+
+  let sortAscending = true;
+
+  // Escucha de eventos en el botón de Ordenar
+  alphabeticalSortButton.addEventListener("click", () => {
+    if (sortAscending) {
+      // Orden ascendente (A→Z)
+      currentSongs.sort((a, b) => a.title.localeCompare(b.title));
+    } else {
+      // Orden descendente (Z→A)
+      currentSongs.sort((a, b) => b.title.localeCompare(a.title));
+    }
+
+    // Cambiamos el estado para la próxima vez
+    sortAscending = !sortAscending;
+
+    // Renderizamos las canciones con el nuevo orden
+    renderSongsAll(currentSongs);
   });
-}
 
-alphabeticalSortButton.addEventListener("click", () => {
- 
-  currentSongs.sort((a, b) => a.title.localeCompare(b.title));
-  renderSongsAll(currentSongs);
+  // BOTÓN "Long Song"
+  longSongButton.addEventListener("click", () => {
+    // Canciones de 3 min o más (>= 180)
+    const filtered = currentSongs.filter(song => song._durationSeconds >= 180);
+    renderSongsAll(filtered);
+  });
 
-});
+  // BOTÓN "Short Song"
+  shortSongButton.addEventListener("click", () => {
+    // Canciones de menos de 3 min (< 180)
+    const filtered = currentSongs.filter(song => song._durationSeconds < 180);
+    renderSongsAll(filtered);
+  });
 
-  
+
   const volumeIcon = document.getElementById("volume-icon");
-  
+
   volumeSlider.addEventListener("input", (event) => {
     const volumeLevel = event.target.value;
-  
+
     // Cambiar el volumen del audio
     audioPlayer.volume = volumeLevel / 100;
-  
+
     // Cambiar el ícono al mínimo
     if (volumeLevel == 0) {
       volumeIcon.setAttribute("name", "volume-mute");
@@ -216,8 +285,8 @@ alphabeticalSortButton.addEventListener("click", () => {
       volumeIcon.setAttribute("color", "#ffffff");
     }
   });
-  
 
+  let currentSongs = [];
   let audioPlayer = document.getElementById("audio-player");
   if (!audioPlayer) {
     audioPlayer = document.createElement("audio");
@@ -228,41 +297,49 @@ alphabeticalSortButton.addEventListener("click", () => {
   let currentSongIndex = 0;
   let isShuffle = false;
   let isRepeat = false;
-  let currentSongs = [];
 
-
-  const fetchSongs = async () => {
+  async function fetchSongs() {
     try {
       const response = await fetch(API_URL);
       if (!response.ok) throw new Error("Error fetching songs.");
-      const songs = await response.json();
-      currentSongs = [...songs]; // Don´t duplicate
-      tbody.innerHTML = "";
+      const songsFromServer = await response.json();
 
-      for (const song of songs) {
-        const duration = await getAudioDuration(song.filepath);
-        const row = createSongRow(song, duration);
-        tbody.appendChild(row);
-        const coverImg = (song.cover);
-        cover = coverImg;
+      currentSongs = [];
+      for (const s of songsFromServer) {
+        // Duración en segundos
+        const durSec = await getAudioDurationSeconds(s.filepath);
+        s._durationSeconds = durSec;
+        s._durationFormatted = formatDuration(durSec);
+        currentSongs.push(s);
       }
 
+      // Mostramos todas al principio
+      renderSongsAll(currentSongs);
+
+      // Añadir listeners a corazones
       addFavoriteListeners();
     } catch (error) {
+      console.error("Error fetchSongs:", error);
     }
-  };
+  }
 
-  const getAudioDuration = async (filepath) => {
+  function getAudioDurationSeconds(filepath) {
     return new Promise((resolve) => {
       const audio = new Audio(filepath);
       audio.addEventListener("loadedmetadata", () => {
-        const duration = audio.duration;
-        const minutes = Math.floor(duration / 60);
-        const seconds = Math.floor(duration % 60).toString().padStart(2, "0");
-        resolve(`${minutes}:${seconds}`);
+        // audio.duration es un número en segundos (float)
+        resolve(audio.duration);
       });
     });
-  };
+  }
+
+  function formatDuration(durationInSeconds) {
+    const minutes = Math.floor(durationInSeconds / 60);
+    const seconds = Math.floor(durationInSeconds % 60).toString().padStart(2, "0");
+    return `${minutes}:${seconds}`;
+  }
+
+
 
   const updateCover = (coverUrl) => {
     imgDiv.style.backgroundImage = `url('${coverUrl}')`;
@@ -386,7 +463,7 @@ alphabeticalSortButton.addEventListener("click", () => {
   });
 
 
-  const createSongRow = (song, duration) => {
+  const createSongRow = (song) => {
 
     const tr = document.createElement("tr");
     // Clase `group`
@@ -400,7 +477,7 @@ alphabeticalSortButton.addEventListener("click", () => {
       </td>
       <td class="py-2 px-4">${song.title}</td>
       <td class="py-2 px-4">${song.artist}</td>
-      <td class="py-2 px-4 text-center">${duration}</td>
+      <td class="py-2 px-4 text-center">${song._durationFormatted}</td>
       <td class="py-2 px-4 text-center">
         <box-icon name="heart" type="${heartType}" color="green" class="cursor-pointer" data-id="${song.id}"></box-icon>
       </td>
@@ -411,6 +488,8 @@ alphabeticalSortButton.addEventListener("click", () => {
 
   document.addEventListener("click", (event) => {
     const button = event.target.closest(".play-button");
+
+    if (!button) return;
 
     const filepath = button.getAttribute("data-file");
     const pausePlayButton = document.querySelector(".custom-button");
@@ -459,29 +538,6 @@ alphabeticalSortButton.addEventListener("click", () => {
     }
   });
 
-  //Favorites
-  const renderSongs = async (filterFavorites = false) => {
-    try {
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error("Error fetching songs.");
-      const songs = await response.json();
-
-      tbody.innerHTML = "";
-
-      const favorites = getFavorites();
-      const filteredSongs = filterFavorites ? songs.filter((song) => favorites.includes(song.id)): songs;
-
-      for (const song of filteredSongs) {
-        const duration = await getAudioDuration(song.filepath);
-        const row = createSongRow(song, duration);
-        tbody.appendChild(row);
-      }
-      addFavoriteListeners();
-    } catch (error) {
-      console.error("Error al renderizar canciones:", error);
-    }
-  };
-
   const addFavoriteListeners = () => {
     const favoriteIcons = document.querySelectorAll("box-icon[data-id]");
     favoriteIcons.forEach((icon) => {
@@ -496,11 +552,13 @@ alphabeticalSortButton.addEventListener("click", () => {
   };
 
   allFilter.addEventListener("click", () => {
-    renderSongs(false);
+    renderSongsAll(currentSongs);
   });
   // Clicks Favorites
   favoritesFilter.addEventListener("click", () => {
-    renderSongs(true);
+    const favorites = getFavorites();
+    const filteredSongs = currentSongs.filter(song => favorites.includes(song.id));
+    renderSongsAll(filteredSongs);
   });
 
   openModal.addEventListener("click", () => {
@@ -526,10 +584,10 @@ alphabeticalSortButton.addEventListener("click", () => {
       return;
     }
 
-    formData.append("music", songFile); 
-    formData.append("title", songTitle); 
-    formData.append("artist", songAuthor); 
-    formData.append("cover", songCover); 
+    formData.append("music", songFile);
+    formData.append("title", songTitle);
+    formData.append("artist", songAuthor);
+    formData.append("cover", songCover);
 
     try {
       const response = await fetch(`${API_LOAD}/upload`, {
@@ -553,6 +611,7 @@ alphabeticalSortButton.addEventListener("click", () => {
     }
   });
 
+  simulateFetch();
   fetchSongs();
 });
 
