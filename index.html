@@ -18,9 +18,53 @@
     <aside class="w-full md:w-1/4 bg-black p-1 flex flex-col">
       <div class="flex space-x-2 mb-2">
         <div id="close-sidebar" class="w-3 h-3 bg-red-500 rounded-full cursor-pointer"></div>
-        <div id="minimize-sidebar" class="w-3 h-3 bg-yellow-500 rounded-full cursor-pointer"></div>
-        <div id="maximize-sidebar" class="w-3 h-3  rounded-full cursor-pointer"></div>
+        <div id="yellow-sidebar" class="w-3 h-3 bg-yellow-500 rounded-full cursor-pointer"></div>
+        <div id="green-sidebar" class="w-3 h-3  rounded-full cursor-pointer"></div>
       </div>
+
+      <!--modal green-->
+
+      <!-- Modal para añadir un nuevo usuario -->
+      <div id="user-modal" class="fixed inset-0 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white w-full max-w-sm rounded-lg p-6 relative">
+          <!-- Botón para cerrar -->
+          <button id="close-user-modal" class="absolute top-2 right-4 text-2xl font-bold">&times;</button>
+          <h2 class="text-xl font-bold text-center mb-4">Nuevo Usuario</h2>
+          <form id="new-user-form" class="space-y-4">
+            <!-- Input para el nombre -->
+            <input type="text" id="new-username" class="w-full border border-gray-300 rounded px-2 py-1 text-center"
+              placeholder="Nombre de usuario" required />
+            <!-- Botón de confirmar -->
+            <button type="submit" class="bg-green-600 hover:bg-green-800 text-white font-bold py-1 px-4 rounded">
+              Confirmar
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!--modal yellow-->
+
+      <div id="change-user-modal" class="fixed inset-0 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white w-full max-w-sm rounded-lg p-6 relative">
+          <!-- Botón para cerrar -->
+          <button id="close-change-user-modal" class="absolute top-2 right-4 text-2xl font-bold">&times;</button>
+
+          <h2 class="text-xl font-bold text-center mb-4">Modificar usuario</h2>
+
+          <form id="change-user-form" class="space-y-4">
+            <!-- Selector con los usuarios del localStorage -->
+            <select id="user-select" class="w-full border border-gray-300 rounded px-2 py-1 text-center">
+              <!-- Se rellena dinámicamente con JS -->
+            </select>
+            <!-- Botón de confirmar -->
+            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-4 rounded">
+              Confirmar
+            </button>
+          </form>
+        </div>
+      </div>
+
+
       <div id="filter">
         <div class="flex items-center justify-start space-x-1" id="toggle-filters">
           <box-icon name="right-arrow" type="solid" color="#ffffff" id="filter-arrow" size="xs"></box-icon>
@@ -33,7 +77,7 @@
           <li class="m-2 text-white hover:text-gray-400 cursor-pointer" id="alphabetical-sort">Ordenar A-Z</li>
         </ul>
       </div>
-      <div id="img" class="mt-auto w-full h-20"></div>
+      <div id="img" class="w-full h-full"></div>
     </aside>
     <main class="flex-1 flex flex-col m-1 overflow-hidden">
       <!--No windws and tables-->
@@ -49,7 +93,7 @@
               </div>
               <div class="flex items-center space-x-3">
                 <img src="./src/img/think.png" class="rounded-full h-7 w-7" />
-                <span class="text-white text-xl font-black">Javier</span>
+                <span id="userName" class="text-white text-xl font-black"></span>
               </div>
             </header>
           </div>
@@ -114,29 +158,29 @@
             </div>
           </div>
         </div>
-      <!--Here windows and tablets-->
-      <div>
-        <div class="flex-1 overflow-y-auto">
-          <div class="min-h-screen flex flex-col justify-start mx-auto max-w-full px-4 overflow-x-auto">
-            <table class="text-center text-gray-300 w-full">
-              <thead class="border-b border-gray-400">
-                <tr>
-                  <th class="py-2 px-4"></th>
-                  <th class="py-2 px-4">TITULO</th>
-                  <th class="py-2 px-4">ARTISTA</th>
-                  <th class="py-2 px-4 text-center">
-                    <box-icon name='time-five' color='#c1aaaa'></box-icon>
-                  </th>
-                  <th class="py-2 px-4 text-center"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Dinamic songs JS -->
-              </tbody>
-            </table>
+        <!--Here windows and tablets-->
+        <div>
+          <div class="flex-1 overflow-y-auto">
+            <div class="min-h-screen flex flex-col justify-start mx-auto max-w-full px-4 overflow-x-auto">
+              <table class="text-center text-gray-300 w-full">
+                <thead class="border-b border-gray-400">
+                  <tr>
+                    <th class="py-2 px-4"></th>
+                    <th class="py-2 px-4">TITULO</th>
+                    <th class="py-2 px-4">ARTISTA</th>
+                    <th class="py-2 px-4 text-center">
+                      <box-icon name='time-five' color='#c1aaaa'></box-icon>
+                    </th>
+                    <th class="py-2 px-4 text-center"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Dinamic songs JS -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
     </main>
   </div>
   <footer id="player" class="flex flex-col items-center p-4 ">
@@ -168,4 +212,5 @@
     </div>
   </footer>
 </body>
+
 </html>

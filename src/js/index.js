@@ -5,9 +5,140 @@ import {
   saveFavorites,
   toggleFavorite,
   isFavorite,
+  getRandomUsername,
+  setStoredUsernames,
+  getStoredUsernames
+
 } from "./local.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Comprobar si ya tenemos nombres en localStorage:
+  let currentUsers = getStoredUsernames();
+  // Si no hay usuarios guardados, creamos algunos por defecto
+  if (currentUsers.length === 0) {
+    currentUsers = ["Javier", "Ana", "Sofía", "Carlos"];
+    setStoredUsernames(currentUsers);
+  }
+  // Eliges uno de esos usuarios al azar
+  const randomUser = getRandomUsername();
+  // Buscamos el elemento del DOM donde se muestra el nombre
+  // Ajusta el selector a tu HTML:
+  const userNameSpan = document.getElementById("userName");
+  // Le asignamos el nombre
+  if (userNameSpan) {
+    userNameSpan.textContent = randomUser;
+  }
+  /*
+  Añadimos nuevos nombre con el modal en localstore
+  */
+  const greenSidebar   = document.getElementById("green-sidebar");
+  const userModal      = document.getElementById("user-modal");
+  const closeUserModal = document.getElementById("close-user-modal");
+  const newUserForm    = document.getElementById("new-user-form");
+  const newUsernameInput = document.getElementById("new-username");
+
+  // 2) ABRIR MODAL AL HACER CLICK EN EL BOTÓN VERDE
+  greenSidebar.addEventListener("click", () => {
+    userModal.classList.remove("hidden");
+  });
+
+  // 3) CERRAR MODAL SI HACES CLICK EN LA 'X'
+  closeUserModal.addEventListener("click", () => {
+    userModal.classList.add("hidden");
+  });
+
+  // 4) VALIDACIÓN EN EL SUBMIT DEL FORMULARIO
+  newUserForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+    const username = newUsernameInput.value.trim(); 
+    // .trim() elimina espacios en blanco al principio y final (extra seguridad)
+
+    // Regex que cumple los requisitos:
+    const usernameRegex = /^(?=.{1,10}$)[A-Z][a-z]*(?: [a-z]+)*$/;
+
+    // Comprobación
+    if (!usernameRegex.test(username)) {
+      alert("Nombre de usuario no válido.\nDebe tener máximo 10 caracteres, " +
+            "empezar en mayúscula, solo letras y espacios sin espacios al inicio/fin.");
+      return;
+    }
+
+    // Si pasa la validación:
+    let currentUsers = getStoredUsernames();
+    currentUsers.push(username);
+    setStoredUsernames(currentUsers);
+
+    // Limpiamos y cerramos
+    newUsernameInput.value = "";
+    userModal.classList.add("hidden");
+    alert("Usuario añadido correctamente");
+  });
+
+
+  // ELEMENTOS para la funcionalidad del botón amarillo
+  const yellowSidebar = document.getElementById("yellow-sidebar");
+  const changeUserModal = document.getElementById("change-user-modal");
+  const closeChangeUserModal = document.getElementById("close-change-user-modal");
+  const changeUserForm = document.getElementById("change-user-form");
+  const userSelect = document.getElementById("user-select");
+  
+
+  // ABRIR EL MODAL AL HACER CLICK EN EL BOTÓN AMARILLO
+  yellowSidebar.addEventListener("click", () => {
+    // Antes de mostrar el modal, limpiamos el select:
+    userSelect.innerHTML = "";
+
+    // Obtenemos todos los usuarios del localStorage
+    const allUsers = getStoredUsernames();
+
+    // Si no hay usuarios, podrías manejar un caso especial...
+    if (allUsers.length === 0) {
+      const option = document.createElement("option");
+      option.value = "";
+      option.textContent = "No hay usuarios";
+      userSelect.appendChild(option);
+    } else {
+      // Rellenamos con cada nombre disponible
+      allUsers.forEach((username) => {
+        const option = document.createElement("option");
+        option.value = username;
+        option.textContent = username;
+        userSelect.appendChild(option);
+      });
+    }
+
+    // Mostrar el modal
+    changeUserModal.classList.remove("hidden");
+  });
+
+  // CERRAR EL MODAL AL HACER CLICK EN LA 'X'
+  closeChangeUserModal.addEventListener("click", () => {
+    changeUserModal.classList.add("hidden");
+  });
+
+  // CUANDO SE HACE SUBMIT EN EL FORM, CAMBIAMOS EL USUARIO
+  changeUserForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const chosenUser = userSelect.value;
+    if (!chosenUser) {
+      alert("No has seleccionado un usuario válido.");
+      return;
+    }
+
+    // CAMBIAR EL NOMBRE EN LA ESQUINA SUPERIOR DERECHA
+    if (userNameSpan) {
+      userNameSpan.textContent = chosenUser;
+    }
+
+    // Cerrar modal
+    changeUserModal.classList.add("hidden");
+  });
+
+
+
+
   const toggleFilters = document.getElementById("toggle-filters");
   const filterList = document.getElementById("filter-list");
   const filterArrow = document.getElementById("filter-arrow");
@@ -33,6 +164,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentSongTitle = document.getElementById("songNow");
   const currentSongArtist = document.getElementById("autor");
   const imgDiv = document.getElementById("img");
+  const searchInput = document.querySelector('input[placeholder="Search"]');
+  const alphabeticalSortButton = document.getElementById("alphabetical-sort");
+
+  searchInput.addEventListener("input", (event) => {
+    const query = event.target.value.toLowerCase().trim();
+  
+    // Filtramos las canciones segun el titulo o el artista
+    const filteredSongs = currentSongs.filter(song =>
+      song.title.toLowerCase().includes(query) ||
+      song.artist.toLowerCase().includes(query)
+    );
+  
+    if (query === "") {
+      renderSongsAll(currentSongs);
+    } else {
+      renderSongsAll(filteredSongs);
+    }
+  });
+  
+const renderSongsAll = (songs) => {
+  tbody.innerHTML = ""; 
+  songs.forEach((song) => {
+    const row = createSongRow(song, song.duration);
+    tbody.appendChild(row);
+  });
+}
+
+alphabeticalSortButton.addEventListener("click", () => {
+ 
+  currentSongs.sort((a, b) => a.title.localeCompare(b.title));
+  renderSongsAll(currentSongs);
+
+});
 
   
   const volumeIcon = document.getElementById("volume-icon");

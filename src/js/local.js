@@ -1,5 +1,22 @@
 import { FAVORITES_KEY } from "./const.js";
 
+export const USERNAMES_KEY = "spotifyCloneUsernames";
+
+export function getStoredUsernames() {
+  const stored = localStorage.getItem(USERNAMES_KEY);
+  return stored ? JSON.parse(stored) : [];
+}
+
+export function setStoredUsernames(usernames) {
+  localStorage.setItem(USERNAMES_KEY, JSON.stringify(usernames));
+}
+
+export function getRandomUsername() {
+  const usernames = getStoredUsernames();
+  const randomIndex = Math.floor(Math.random() * usernames.length);
+  return usernames[randomIndex];
+}
+
 // Obtener favoritos del localStorage
 export const getFavorites = () => {
   const favoritesJSON = localStorage.getItem(FAVORITES_KEY);
