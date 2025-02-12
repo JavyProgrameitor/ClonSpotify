@@ -1,0 +1,17 @@
+[
+    {
+      "id": 1,
+      "title": "Rebel Rebel",
+      "artist": "David Bowie",
+      "filepath": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "cover": "https://i.pinimg.com/originals/6a/d8/ed/6ad8ed9470a0f50c65bde12170f3f342.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Rovin",
+      "artist": "Van-Halen",
+      "filepath": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+      "cover": "https://files2.soniccdn.com/imagecache/a5c/db11e0545f01e174821b1ba5c1297-779468.jpg"
+    }
+  ]
+  
